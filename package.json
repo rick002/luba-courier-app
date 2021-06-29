@@ -1,5 +1,5 @@
 {
-    "name": "adminlte",
+    "name": "luba",
     "version": "0.1.0",
     "scripts": {
         "start": "ng serve",

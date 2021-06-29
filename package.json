@@ -12,9 +12,9 @@
         "preinstall": "npm install -g @angular/cli @angular/compiler-cli typescript"
     },
     "engines": {
-    "node": "14.17.1",
-    "npm": "7.19.0"
-  },
+        "node": "14.17.1",
+        "npm": "7.19.0"
+    },
     "private": true,
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
@@ -39,6 +39,7 @@
         "@angular/router": "12.0.2",
         "core-js": "3.8.0",
         "express": "^4.17.1",
+        "express-http-proxy": "^1.6.2",
         "gatekeeper-client-sdk": "0.2.1",
         "luxon": "^1.27.0",
         "ngx-toastr": "14.0.0",

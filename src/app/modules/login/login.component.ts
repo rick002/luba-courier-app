@@ -5,7 +5,7 @@ import {
     Renderer2,
     HostBinding
 } from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import {AppService} from '@services/app.service';
 
@@ -18,52 +18,35 @@ export class LoginComponent implements OnInit, OnDestroy {
     @HostBinding('class') class = 'login-box';
     public loginForm: FormGroup;
     public isAuthLoading = false;
-    public isGoogleLoading = false;
-    public isFacebookLoading = false;
 
     constructor(
         private renderer: Renderer2,
         private toastr: ToastrService,
-        private appService: AppService
+        public appService: AppService,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
-        this.renderer.addClass(
-            document.querySelector('app-root'),
-            'login-page'
-        );
-        this.loginForm = new FormGroup({
-            email: new FormControl(null, Validators.required),
-            password: new FormControl(null, Validators.required)
+        this.renderer.addClass(document.querySelector('app-root'),'login-page');
+        this.loginForm = this.fb.group({
+            username: ['', [Validators.required, Validators.maxLength(10), Validators.pattern('^[a-zA-Z0-9]*$')]],
+            password: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]*$')]]
         });
     }
 
-    async loginByAuth() {
-        if (this.loginForm.valid) {
-            this.isAuthLoading = true;
-            await this.appService.loginByAuth(this.loginForm.value);
-            this.isAuthLoading = false;
+    loginByAuth() {
+        if (this.loginForm.valid && this.appService.failedLoginAttempts < 3) {
+            this.appService.isAuthLoading = true;
+            this.appService.loginByAuth(this.loginForm.value);
+        } else if(this.appService.failedLoginAttempts === 3) {
+            this.toastr.error('Sorry, allowed number of attempts succeded, please try again later.')
         } else {
             this.toastr.error('Form is not valid!');
+            this.appService.isAuthLoading = false;
         }
     }
 
-    async loginByGoogle() {
-        this.isGoogleLoading = true;
-        await this.appService.loginByGoogle();
-        this.isGoogleLoading = false;
-    }
-
-    async loginByFacebook() {
-        this.isFacebookLoading = true;
-        await this.appService.loginByFacebook();
-        this.isFacebookLoading = false;
-    }
-
     ngOnDestroy() {
-        this.renderer.removeClass(
-            document.querySelector('app-root'),
-            'login-page'
-        );
+        this.renderer.removeClass(document.querySelector('app-root'),'login-page');
     }
 }

@@ -1,85 +1,44 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {Gatekeeper} from 'gatekeeper-client-sdk';
+import { CourierService } from './courier.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppService {
+    public failedLoginAttempts: number = 0;
     public user: any = null;
+    public isAuthLoading: boolean = false;
+    
+    constructor(
+        private router: Router, 
+        private toastr: ToastrService, 
+        private courierService: CourierService
+    ) {}
 
-    constructor(private router: Router, private toastr: ToastrService) {}
-
-    async loginByAuth({email, password}) {
-        try {
-            const token = await Gatekeeper.loginByAuth(email, password);
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
+    loginByAuth({username, password}) {
+        this.courierService.login({username, password}).subscribe(
+            response => {
+                this.isAuthLoading = false;
+                if (response.success) { 
+                    this.openDashboard(response); 
+                } else { 
+                    this.failedLoginAttempts++;
+                    this.toastr.error(response.exception); 
+                }
+        });
     }
 
-    async registerByAuth({email, password}) {
-        try {
-            const token = await Gatekeeper.registerByAuth(email, password);
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
+    openDashboard(response: any) {
+        localStorage.setItem('user-session', JSON.stringify(response.responseObject));
+        this.router.navigate(['/']);
     }
 
-    async loginByGoogle() {
+    getProfile() {
         try {
-            const token = await Gatekeeper.loginByGoogle();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async registerByGoogle() {
-        try {
-            const token = await Gatekeeper.registerByGoogle();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async loginByFacebook() {
-        try {
-            const token = await Gatekeeper.loginByFacebook();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async registerByFacebook() {
-        try {
-            const token = await Gatekeeper.registerByFacebook();
-            localStorage.setItem('token', token);
-            await this.getProfile();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.toastr.error(error.response.data.message);
-        }
-    }
-
-    async getProfile() {
-        try {
-            this.user = await Gatekeeper.getProfile();
+            this.user = JSON.parse(localStorage.getItem('user-session'));
+            return this.user;
         } catch (error) {
             this.logout();
             throw error;
@@ -87,9 +46,8 @@ export class AppService {
     }
 
     logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('gatekeeper_token');
         this.user = null;
+        localStorage.removeItem('user-session');
         this.router.navigate(['/login']);
     }
 }

@@ -13,7 +13,6 @@ import {BlankComponent} from '@pages/blank/blank.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ProfileComponent} from '@pages/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {RegisterComponent} from '@modules/register/register.component';
 import {DashboardComponent} from '@pages/dashboard/dashboard.component';
 import {ToastrModule} from 'ngx-toastr';
 import {MessagesDropdownMenuComponent} from '@modules/main/header/messages-dropdown-menu/messages-dropdown-menu.component';
@@ -23,10 +22,9 @@ import {AppButtonComponent} from './components/app-button/app-button.component';
 import {registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import {UserDropdownMenuComponent} from '@modules/main/header/user-dropdown-menu/user-dropdown-menu.component';
-import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.component';
-import {RecoverPasswordComponent} from '@modules/recover-password/recover-password.component';
 import {LanguageDropdownComponent} from '@modules/main/header/language-dropdown/language-dropdown.component';
-import {PrivacyPolicyComponent} from './modules/privacy-policy/privacy-policy.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { TableModule } from 'primeng/table';
 
 registerLocaleData(localeEn, 'en-EN');
 
@@ -40,16 +38,16 @@ registerLocaleData(localeEn, 'en-EN');
         MenuSidebarComponent,
         BlankComponent,
         ProfileComponent,
-        RegisterComponent,
+       
         DashboardComponent,
         MessagesDropdownMenuComponent,
         NotificationsDropdownMenuComponent,
         AppButtonComponent,
         UserDropdownMenuComponent,
-        ForgotPasswordComponent,
-        RecoverPasswordComponent,
+       
         LanguageDropdownComponent,
-        PrivacyPolicyComponent
+       
+        DataTableComponent,
     ],
     imports: [
         BrowserModule,
@@ -57,6 +55,7 @@ registerLocaleData(localeEn, 'en-EN');
         AppRoutingModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
+        TableModule,
         ToastrModule.forRoot({
             timeOut: 3000,
             positionClass: 'toast-bottom-right',

@@ -16,28 +16,15 @@ import {Observable} from 'rxjs';
 export class NonAuthGuard implements CanActivate, CanActivateChild {
     constructor(private router: Router) {}
 
-    canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ):
-        | Observable<boolean | UrlTree>
-        | Promise<boolean | UrlTree>
-        | boolean
-        | UrlTree {
-        if (!localStorage.getItem('token')) {
+    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        if (!localStorage.getItem('user-session')) {
             return true;
         }
         this.router.navigate(['/']);
         return false;
     }
-    canActivateChild(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ):
-        | Observable<boolean | UrlTree>
-        | Promise<boolean | UrlTree>
-        | boolean
-        | UrlTree {
+
+    canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         return this.canActivate(next, state);
     }
 }

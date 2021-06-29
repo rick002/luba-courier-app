@@ -1,12 +1,11 @@
 <!-- Brand Logo -->
 <a [routerLink]="['/']" class="brand-link">
-    <img
-        src="assets/img/logo.png"
-        alt="AdminLTE Logo"
-        class="brand-image img-circle elevation-3"
-        style="opacity: 0.8"
-    />
-    <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <span class="h1 brand-image">
+        <i class="fas fa-cubes"></i>
+    </span>
+    <span class="h1 brand-text font-weight-light">
+        <b class="mr-5">Luba</b>
+    </span>
 </a>
 
 <!-- Sidebar -->
@@ -21,14 +20,14 @@
             />
         </div>
         <div class="info">
-            <a [routerLink]="['/profile']" class="d-block">
-                {{ user.email }}
+            <a [routerLink]="['/']" class="d-block">
+                {{ user.fullName }}
             </a>
         </div>
     </div>
 
     <!-- Sidebar Menu -->
-    <nav class="mt-2" style="overflow-y: hidden">
+    <nav class="mt-2" style="overflow: hidden">
         <ul
             class="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview"
@@ -40,13 +39,7 @@
             <li class="nav-item">
                 <a [routerLink]="['/']" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>Dashboard</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a [routerLink]="['/blank']" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>Blank</p>
+                    <p>Pending Packages</p>
                 </a>
             </li>
         </ul>

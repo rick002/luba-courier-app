@@ -16,38 +16,23 @@ import {AppService} from '@services/app.service';
 export class AuthGuard implements CanActivate, CanActivateChild {
     constructor(private router: Router, private appService: AppService) {}
 
-    canActivate(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ):
-        | Observable<boolean | UrlTree>
-        | Promise<boolean | UrlTree>
-        | boolean
-        | UrlTree {
-        return this.getProfile();
+    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
+        if (this.getProfile()) {
+            return true;
+        }
+
+        this.router.navigate(['/login']);
+        return false;
     }
 
-    canActivateChild(
-        next: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ):
-        | Observable<boolean | UrlTree>
-        | Promise<boolean | UrlTree>
-        | boolean
-        | UrlTree {
+    canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):boolean {
         return this.canActivate(next, state);
     }
 
-    async getProfile() {
-        if (this.appService.user) {
+    getProfile() {
+        if (this.appService.user || this.appService.getProfile()) {
             return true;
         }
-
-        try {
-            await this.appService.getProfile();
-            return true;
-        } catch (error) {
-            return false;
-        }
+        return false;
     }
 }

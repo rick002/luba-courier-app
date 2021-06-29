@@ -1,0 +1,47 @@
+<!-- Brand Logo -->
+<a [routerLink]="['/']" class="brand-link">
+    <span class="h1 brand-image">
+        <i class="fas fa-cubes"></i>
+    </span>
+    <span class="h2 brand-text font-weight-light">
+        <b class="mr-5">Luba</b>
+    </span>
+</a>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            <img
+                [src]="user.picture || 'assets/img/default-profile.png'"
+                class="img-circle elevation-2"
+                alt="User Image"
+            />
+        </div>
+        <div class="info">
+            <a [routerLink]="['/']" class="d-block">
+                {{ user.fullName }}
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2" style="overflow: hidden">
+        <ul
+            class="nav nav-pills nav-sidebar flex-column"
+            data-widget="treeview"
+            role="menu"
+            data-accordion="false"
+        >
+            <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+            <li class="nav-item">
+                <a [routerLink]="['/']" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Pending Packages</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
